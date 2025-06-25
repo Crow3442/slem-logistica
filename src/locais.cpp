@@ -1,0 +1,1 @@
+// Arquivo: src/locais.cpp
