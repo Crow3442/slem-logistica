@@ -1,4 +1,3 @@
-```markdown
 # 🚚 SLEM – Sistema de Logística de Entrega de Mercadorias
 
 Trabalho prático da disciplina **Algoritmos e Estruturas de Dados I** – Engenharia de Software  
@@ -25,45 +24,52 @@ Este projeto enfatiza a modularização, manipulação de arquivos binários/tex
 
 ---
 
-## 🗂 Estrutura de Diretórios
+## 📁 Estrutura de Diretórios
 
 ```
 SLEM/
-├── include/         # Arquivos .h (interfaces)
-├── src/             # Arquivos .cpp (implementações)
-├── data/            # Arquivos de dados binários
-├── main.cpp         # Função principal (menu)
-├── Makefile         # Script de compilação (opcional)
-└── README.md        # Este arquivo
+├── include/      # Arquivos .h (interfaces)
+├── src/          # Arquivos .cpp (implementações)
+├── data/         # Arquivos de dados binários
+├── main.cpp      # Função principal (menu)
+├── Makefile      # Script de compilação (automatizado)
+└── README.md     # Este arquivo
 ```
 
 ---
 
 ## ⚙️ Compilação e Execução
 
-### 🔧 Compilação
+### ✅ Usando Make (recomendado)
+
+Este projeto possui um `Makefile` com suporte a:
+
+| Comando         | O que faz                                            |
+|-----------------|------------------------------------------------------|
+| `make`          | Compila o projeto e gera o executável `slem.exe`     |
+| `make run`      | Compila (se necessário) e executa o programa         |
+| `make clean`    | Remove o executável                                  |
+| `make rebuild`  | Limpa e recompila tudo do zero                       |
+
+> 💡 Use **Git Bash**, **MinGW** ou **PowerShell com Make instalado** no Windows.
+
+### 🔧 Compilação manual (alternativa)
+
+Se preferir compilar diretamente, use:
+
 ```bash
-g++ -o slem main.cpp src/*.cpp
+g++ -Wall -Iinclude -o slem main.cpp src/locais.cpp
 ```
 
-### ▶️ Execução
+E para executar:
+
 ```bash
 ./slem
 ```
 
 ---
 
-## 🛠 Tecnologias e Restrições
-
-- Linguagem: **C++ (sem uso de `std::string`)**
-- Manipulação de arquivos: **stdio.h / C-style**
-- Orientação a Objetos: **Recomendada**, mas não obrigatória
-- Persistência: **Arquivos binários separados por entidade**
-
----
-
 ## 👥 Equipe
 
-- João Eduardo Soares Moreira
+- João Eduardo Soares Moreira  
 - Rafael Nagem Volpini
-```
