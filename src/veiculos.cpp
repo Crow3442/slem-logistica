@@ -112,3 +112,58 @@ void listarVeiculos(const Veiculo veiculos[], int quantidade, const Local locais
         printf("Nenhum veículo cadastrado.\n");
     }
 }
+
+void atualizarVeiculo(Veiculo veiculos[], int quantidade, const Local locais[], int qtdLocais) {
+    listarVeiculos(veiculos, quantidade, locais, qtdLocais);
+
+    printf("\nDigite o ID do veículo que deseja atualizar: ");
+    int id;
+    if (scanf("%d", &id) != 1 || id < 0 || id >= quantidade || !veiculos[id].ativo) {
+        printf("ID inválido.\n");
+        while (getchar() != '\n');
+        return;
+    }
+    while (getchar() != '\n'); // Limpa buffer
+
+    printf("\n--- Atualizar Veículo ---\n");
+
+    // Atualizar modelo
+    printf("Novo modelo (%s): ", veiculos[id].modelo);
+    char novoModelo[MAX_MODELO];
+    fgets(novoModelo, MAX_MODELO, stdin);
+    novoModelo[strcspn(novoModelo, "\n")] = '\0';
+    if (strlen(novoModelo) > 0) {
+        strcpy(veiculos[id].modelo, novoModelo);
+    }
+
+    // Atualizar status
+    printf("Novo status (1 = disponível, 0 = ocupado) [%d]: ", veiculos[id].status);
+    int status;
+    if (scanf("%d", &status) == 1 && (status == 0 || status == 1)) {
+        veiculos[id].status = status;
+    } else {
+        printf("Status inválido. Mantido valor atual.\n");
+    }
+    while (getchar() != '\n');
+
+    // Atualizar local atual
+    printf("\n--- Locais disponíveis ---\n");
+    for (int i = 0; i < qtdLocais; i++) {
+        if (locais[i].ativo) {
+            printf("ID %02d: %s\n", i, locais[i].nome);
+        }
+    }
+
+    printf("Novo ID de local atual (%d): ", veiculos[id].idLocalAtual);
+    int novoLocal;
+    if (scanf("%d", &novoLocal) == 1 &&
+        novoLocal >= 0 && novoLocal < qtdLocais &&
+        locais[novoLocal].ativo) {
+        veiculos[id].idLocalAtual = novoLocal;
+    } else {
+        printf("Local inválido. Mantido valor atual.\n");
+    }
+    while (getchar() != '\n');
+
+    printf("Veículo atualizado com sucesso!\n");
+}

@@ -45,6 +45,7 @@ void menuVeiculos(Veiculo veiculos[], int *qtdVeiculos, Local locais[], int qtdL
         printf("\n======= MENU DE VEÍCULOS =======\n");
         printf("1. Cadastrar veículo\n");
         printf("2. Listar veículos\n");
+        printf("3. Atualizar veículo\n");
         printf("0. Voltar ao menu principal\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
@@ -56,6 +57,9 @@ void menuVeiculos(Veiculo veiculos[], int *qtdVeiculos, Local locais[], int qtdL
                 break;
             case 2:
                 listarVeiculos(veiculos, *qtdVeiculos, locais, qtdLocais);
+                break;
+            case 3:
+                atualizarVeiculo(veiculos, *qtdVeiculos, locais, qtdLocais);
                 break;
             case 0:
                 printf("Retornando ao menu principal...\n");
