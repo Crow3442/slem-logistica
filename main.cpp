@@ -3,19 +3,18 @@
 #include "include/locais.h"
 
 int main() {
+    system("chcp 65001 > nul");  // Para suportar UTF-8 no terminal do Windows
+
     Local locais[MAX_LOCAIS];
     int quantidade = 0;
 
-    // Cadastro de um local
+    // Cadastrar dois locais
+    cadastrarLocal(locais, &quantidade);
     cadastrarLocal(locais, &quantidade);
 
-    // Impressão do local cadastrado para conferência
-    printf("\n--- Local Cadastrado ---\n");
-    printf("Nome         : %-30s\n", locais[0].nome);
-    printf("Coordenada X : %7.2f\n", locais[0].x);
-    printf("Coordenada Y : %7.2f\n", locais[0].y);
-    printf("Status       : %s\n", locais[0].ativo ? "Ativo" : "Inativo");
+    // Listar os locais cadastrados
+    listarLocais(locais, quantidade);
 
-    system("pause"); // no Windows
+    system("pause");  // Use getchar(); getchar(); no Linux/macOS se preferir
     return 0;
 }

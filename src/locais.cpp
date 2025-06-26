@@ -7,10 +7,10 @@
 int nomeInvalido(const char nome[]) {
     for (int i = 0; nome[i] != '\0'; i++) {
         if (!isspace(nome[i])) {
-            return 0; // válido
+            return 0;
         }
     }
-    return 1; // inválido
+    return 1;
 }
 
 void cadastrarLocal(Local locais[], int *quantidade) {
@@ -22,12 +22,12 @@ void cadastrarLocal(Local locais[], int *quantidade) {
     Local novo;
     printf("\n--- Cadastro de Local ---\n");
 
-    // Leitura do nome com validação
+    // Leitura do nome
     int nomeValido = 0;
     while (!nomeValido) {
         printf("Nome do local: ");
         fgets(novo.nome, MAX_NOME, stdin);
-        novo.nome[strcspn(novo.nome, "\n")] = '\0'; // remove '\n'
+        novo.nome[strcspn(novo.nome, "\n")] = '\0';
 
         if (strlen(novo.nome) == 0 || nomeInvalido(novo.nome)) {
             printf("Nome inválido. Digite algo significativo.\n");
@@ -36,7 +36,7 @@ void cadastrarLocal(Local locais[], int *quantidade) {
         }
     }
 
-    // Leitura de coordenada X com validação
+    // Coordenada X
     int leituraValida = 0;
     while (!leituraValida) {
         printf("Coordenada X: ");
@@ -44,11 +44,11 @@ void cadastrarLocal(Local locais[], int *quantidade) {
             leituraValida = 1;
         } else {
             printf("Valor inválido. Digite um número real.\n");
-            while (getchar() != '\n'); // limpa o buffer
+            while (getchar() != '\n');
         }
     }
 
-    // Leitura de coordenada Y com validação
+    // Coordenada Y
     leituraValida = 0;
     while (!leituraValida) {
         printf("Coordenada Y: ");
@@ -56,16 +56,31 @@ void cadastrarLocal(Local locais[], int *quantidade) {
             leituraValida = 1;
         } else {
             printf("Valor inválido. Digite um número real.\n");
-            while (getchar() != '\n'); // limpa o buffer
+            while (getchar() != '\n');
         }
     }
 
-    // Limpa buffer após último scanf
-    while (getchar() != '\n');
-
+    while (getchar() != '\n'); // Limpa buffer final
     novo.ativo = 1;
     locais[*quantidade] = novo;
     (*quantidade)++;
 
     printf("Local cadastrado com sucesso!\n");
+}
+
+void listarLocais(const Local locais[], int quantidade) {
+    printf("\n--- Lista de Locais Cadastrados ---\n");
+
+    int encontrados = 0;
+    for (int i = 0; i < quantidade; i++) {
+        if (locais[i].ativo) {
+            printf("ID: %02d | Nome: %-30s | X: %7.2f | Y: %7.2f\n",
+                   i, locais[i].nome, locais[i].x, locais[i].y);
+            encontrados++;
+        }
+    }
+
+    if (encontrados == 0) {
+        printf("Nenhum local ativo cadastrado.\n");
+    }
 }
