@@ -6,25 +6,25 @@ SRC_DIR = src
 INCLUDE_DIR = include
 
 # Arquivos fonte
-SRCS = main.cpp $(SRC_DIR)/locais.cpp
+SRCS = main.cpp $(SRC_DIR)/locais.cpp $(SRC_DIR)/veiculos.cpp
 
 # Compilador e flags
 CXX = g++
 CXXFLAGS = -Wall -I$(INCLUDE_DIR)
 
-# Compilar e gerar o executável
+# Regra principal
 all: $(TARGET)
 
 $(TARGET): $(SRCS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
-# Limpa o executável (compatível com Git Bash e Unix)
-clean:
-	rm -f $(TARGET).exe $(TARGET)
-
-# Roda o programa (compila e executa)
+# Executar o programa
 run: all
 	./$(TARGET).exe
 
-# Recompila tudo do zero
+# Limpar o executável
+clean:
+	rm -f $(TARGET).exe $(TARGET)
+
+# Limpar e recompilar
 rebuild: clean all

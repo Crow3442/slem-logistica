@@ -11,8 +11,8 @@ typedef struct {
     char placa[MAX_PLACA];       // Identificador único
     char modelo[MAX_MODELO];     // Modelo do veículo
     int status;                  // 1 = disponível, 0 = ocupado
-    int idLocalAtual;            // Índice do local atual no vetor de locais
-    int ativo;                   // 1 = ativo, 0 = excluído
+    int idLocalAtual;            // Índice no vetor de locais
+    int ativo;                   // 1 = ativo, 0 = inativo
 } Veiculo;
 
 // CRUD
@@ -21,7 +21,8 @@ void listarVeiculos(const Veiculo veiculos[], int quantidade, const Local locais
 void atualizarVeiculo(Veiculo veiculos[], int quantidade, const Local locais[], int qtdLocais);
 void excluirVeiculo(Veiculo veiculos[], int *quantidade);
 
-// Auxiliar
+// Auxiliares
 int encontrarVeiculoPorPlaca(const Veiculo veiculos[], int quantidade, const char placa[]);
+void converterPlacaParaMaiusculo(char placa[]);
 
 #endif

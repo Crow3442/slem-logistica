@@ -1,6 +1,13 @@
 #include "../include/veiculos.h"
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>  // para toupper e validações
+
+void converterPlacaParaMaiusculo(char placa[]) {
+    for (int i = 0; placa[i] != '\0'; i++) {
+        placa[i] = toupper(placa[i]);
+    }
+}
 
 int encontrarVeiculoPorPlaca(const Veiculo veiculos[], int quantidade, const char placa[]) {
     for (int i = 0; i < quantidade; i++) {
@@ -20,15 +27,29 @@ void cadastrarVeiculo(Veiculo veiculos[], int *quantidade, const Local locais[],
     Veiculo novo;
     printf("\n--- Cadastro de Veículo ---\n");
 
-    // Placa
+    // Placa com validação
     int placaValida = 0;
     while (!placaValida) {
-        printf("Placa: ");
+        printf("Placa (formato ABC1234): ");
         fgets(novo.placa, MAX_PLACA, stdin);
         novo.placa[strcspn(novo.placa, "\n")] = '\0';
+        converterPlacaParaMaiusculo(novo.placa);
 
-        if (strlen(novo.placa) == 0) {
-            printf("Placa inválida.\n");
+        if (strlen(novo.placa) != 7) {
+            printf("A placa deve conter exatamente 7 caracteres.\n");
+            continue;
+        }
+
+        int formatoCorreto = 1;
+        for (int i = 0; i < 3; i++) {
+            if (!isalpha(novo.placa[i])) formatoCorreto = 0;
+        }
+        for (int i = 3; i < 7; i++) {
+            if (!isdigit(novo.placa[i])) formatoCorreto = 0;
+        }
+
+        if (!formatoCorreto) {
+            printf("Placa inválida. Use o formato LLLNNNN (ex: ABC1234).\n");
         } else if (encontrarVeiculoPorPlaca(veiculos, *quantidade, novo.placa) != -1) {
             printf("Placa já cadastrada.\n");
         } else {
@@ -41,23 +62,23 @@ void cadastrarVeiculo(Veiculo veiculos[], int *quantidade, const Local locais[],
     fgets(novo.modelo, MAX_MODELO, stdin);
     novo.modelo[strcspn(novo.modelo, "\n")] = '\0';
 
-    // Status inicial: disponível
+    // Status padrão: disponível
     novo.status = 1;
 
-    // Associar a um local existente
+    // Associar local atual
     printf("\n--- Locais disponíveis ---\n");
     for (int i = 0; i < qtdLocais; i++) {
         if (locais[i].ativo) {
-            printf("ID %d: %s\n", i, locais[i].nome);
+            printf("ID %02d: %s\n", i, locais[i].nome);
         }
     }
 
-    printf("ID do local atual do veículo: ");
+    printf("Digite o ID do local atual do veículo: ");
     scanf("%d", &novo.idLocalAtual);
     while (getchar() != '\n');
 
     if (novo.idLocalAtual < 0 || novo.idLocalAtual >= qtdLocais || !locais[novo.idLocalAtual].ativo) {
-        printf("Local inválido. Cadastro cancelado.\n");
+        printf("ID de local inválido. Cadastro cancelado.\n");
         return;
     }
 
@@ -66,4 +87,28 @@ void cadastrarVeiculo(Veiculo veiculos[], int *quantidade, const Local locais[],
     (*quantidade)++;
 
     printf("Veículo cadastrado com sucesso!\n");
+}
+
+void listarVeiculos(const Veiculo veiculos[], int quantidade, const Local locais[], int qtdLocais) {
+    printf("\n--- Lista de Veículos Cadastrados ---\n");
+    printf("%-4s | %-8s | %-20s | %-10s | %s\n", "ID", "Placa", "Modelo", "Status", "Local Atual");
+    printf("---------------------------------------------------------------\n");
+
+    int encontrados = 0;
+    for (int i = 0; i < quantidade; i++) {
+        if (veiculos[i].ativo) {
+            const char* statusStr = veiculos[i].status ? "Disponível" : "Ocupado";
+            const char* nomeLocal = (veiculos[i].idLocalAtual >= 0 && veiculos[i].idLocalAtual < qtdLocais && locais[veiculos[i].idLocalAtual].ativo)
+                ? locais[veiculos[i].idLocalAtual].nome
+                : "Local inválido";
+
+            printf("%02d   | %-8s | %-20s | %-10s | %s\n",
+                   i, veiculos[i].placa, veiculos[i].modelo, statusStr, nomeLocal);
+            encontrados++;
+        }
+    }
+
+    if (encontrados == 0) {
+        printf("Nenhum veículo cadastrado.\n");
+    }
 }
