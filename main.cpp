@@ -19,15 +19,18 @@ void menuLocais(Local locais[], int *quantidade) {
         switch (opcao) {
             case 1:
                 cadastrarLocal(locais, quantidade);
+                salvarLocaisEmArquivo(locais, *quantidade);  // salva após cadastro
                 break;
             case 2:
                 listarLocais(locais, *quantidade);
                 break;
             case 3:
                 atualizarLocal(locais, *quantidade);
+                salvarLocaisEmArquivo(locais, *quantidade);  // salva após atualizar
                 break;
             case 4:
                 excluirLocal(locais, quantidade);
+                salvarLocaisEmArquivo(locais, *quantidade);  // salva após exclusão
                 break;
             case 0:
                 printf("Retornando ao menu principal...\n");
@@ -72,10 +75,10 @@ void menuVeiculos(Veiculo veiculos[], int *qtdVeiculos, Local locais[], int qtdL
 }
 
 int main() {
-    system("chcp 65001 > nul");  // UTF-8 no Windows
+    system("chcp 65001 > nul");  // Suporte a UTF-8 no terminal do Windows
 
     Local locais[MAX_LOCAIS];
-    int qtdLocais = 0;
+    int qtdLocais = carregarLocaisDoArquivo(locais);  // carregar do arquivo
 
     Veiculo veiculos[MAX_VEICULOS];
     int qtdVeiculos = 0;

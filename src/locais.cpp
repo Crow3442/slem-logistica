@@ -151,3 +151,34 @@ void excluirLocal(Local locais[], int *quantidade) {
         printf("Exclusão cancelada.\n");
     }
 }
+
+#include <stdio.h>  // já deve estar no topo, mas repita se necessário
+
+void salvarLocaisEmArquivo(const Local locais[], int quantidade) {
+    FILE *f = fopen("data/locais.dat", "wb");
+    if (f == NULL) {
+        printf("Erro ao salvar locais no arquivo.\n");
+        return;
+    }
+
+    fwrite(locais, sizeof(Local), quantidade, f);
+    fclose(f);
+    printf("Backup de locais salvo com sucesso.\n");
+}
+
+int carregarLocaisDoArquivo(Local locais[]) {
+    FILE *f = fopen("data/locais.dat", "rb");
+    if (f == NULL) {
+        printf("Arquivo locais.dat não encontrado. Nenhum local foi carregado.\n");
+        return 0;
+    }
+
+    int quantidade = 0;
+    while (quantidade < MAX_LOCAIS && fread(&locais[quantidade], sizeof(Local), 1, f) == 1) {
+        quantidade++;
+    }
+
+    fclose(f);
+    printf("Locais carregados do arquivo: %d\n", quantidade);
+    return quantidade;
+}
