@@ -3,18 +3,36 @@
 #include "include/locais.h"
 
 int main() {
-    system("chcp 65001 > nul");  // Para suportar UTF-8 no terminal do Windows
+    system("chcp 65001 > nul");  // Suporte UTF-8 no Windows (opcional)
 
     Local locais[MAX_LOCAIS];
     int quantidade = 0;
+    int opcao;
 
-    // Cadastrar dois locais
-    cadastrarLocal(locais, &quantidade);
-    cadastrarLocal(locais, &quantidade);
+    do {
+        printf("\n======= MENU DE LOCAIS =======\n");
+        printf("1. Cadastrar local\n");
+        printf("2. Listar locais\n");
+        printf("0. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+        while (getchar() != '\n'); // limpa buffer após scanf
 
-    // Listar os locais cadastrados
-    listarLocais(locais, quantidade);
+        switch (opcao) {
+            case 1:
+                cadastrarLocal(locais, &quantidade);
+                break;
+            case 2:
+                listarLocais(locais, quantidade);
+                break;
+            case 0:
+                printf("Encerrando...\n");
+                break;
+            default:
+                printf("Opção inválida. Tente novamente.\n");
+        }
 
-    system("pause");  // Use getchar(); getchar(); no Linux/macOS se preferir
+    } while (opcao != 0);
+
     return 0;
 }
