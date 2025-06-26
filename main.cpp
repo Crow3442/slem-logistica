@@ -19,18 +19,18 @@ void menuLocais(Local locais[], int *quantidade) {
         switch (opcao) {
             case 1:
                 cadastrarLocal(locais, quantidade);
-                salvarLocaisEmArquivo(locais, *quantidade);  // salva após cadastro
+                salvarLocaisEmArquivo(locais, *quantidade);
                 break;
             case 2:
                 listarLocais(locais, *quantidade);
                 break;
             case 3:
                 atualizarLocal(locais, *quantidade);
-                salvarLocaisEmArquivo(locais, *quantidade);  // salva após atualizar
+                salvarLocaisEmArquivo(locais, *quantidade);
                 break;
             case 4:
                 excluirLocal(locais, quantidade);
-                salvarLocaisEmArquivo(locais, *quantidade);  // salva após exclusão
+                salvarLocaisEmArquivo(locais, *quantidade);
                 break;
             case 0:
                 printf("Retornando ao menu principal...\n");
@@ -49,6 +49,7 @@ void menuVeiculos(Veiculo veiculos[], int *qtdVeiculos, Local locais[], int qtdL
         printf("1. Cadastrar veículo\n");
         printf("2. Listar veículos\n");
         printf("3. Atualizar veículo\n");
+        printf("4. Excluir veículo\n");
         printf("0. Voltar ao menu principal\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
@@ -64,6 +65,9 @@ void menuVeiculos(Veiculo veiculos[], int *qtdVeiculos, Local locais[], int qtdL
             case 3:
                 atualizarVeiculo(veiculos, *qtdVeiculos, locais, qtdLocais);
                 break;
+            case 4:
+                excluirVeiculo(veiculos, qtdVeiculos);
+                break;
             case 0:
                 printf("Retornando ao menu principal...\n");
                 break;
@@ -75,16 +79,15 @@ void menuVeiculos(Veiculo veiculos[], int *qtdVeiculos, Local locais[], int qtdL
 }
 
 int main() {
-    system("chcp 65001 > nul");  // Suporte a UTF-8 no terminal do Windows
+    system("chcp 65001 > nul");  // UTF-8 no terminal
 
     Local locais[MAX_LOCAIS];
-    int qtdLocais = carregarLocaisDoArquivo(locais);  // carregar do arquivo
+    int qtdLocais = carregarLocaisDoArquivo(locais);  // leitura automática
 
     Veiculo veiculos[MAX_VEICULOS];
     int qtdVeiculos = 0;
 
     int opcao;
-
     do {
         printf("\n======= SISTEMA DE LOGÍSTICA =======\n");
         printf("Seja bem-vindo ao sistema! Escolha o que deseja fazer:\n");

@@ -1,7 +1,7 @@
 #include "../include/veiculos.h"
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>  // para toupper e validações
+#include <ctype.h>
 
 void converterPlacaParaMaiusculo(char placa[]) {
     for (int i = 0; placa[i] != '\0'; i++) {
@@ -27,7 +27,7 @@ void cadastrarVeiculo(Veiculo veiculos[], int *quantidade, const Local locais[],
     Veiculo novo;
     printf("\n--- Cadastro de Veículo ---\n");
 
-    // Placa com validação
+    // Placa
     int placaValida = 0;
     while (!placaValida) {
         printf("Placa (formato ABC1234): ");
@@ -62,7 +62,7 @@ void cadastrarVeiculo(Veiculo veiculos[], int *quantidade, const Local locais[],
     fgets(novo.modelo, MAX_MODELO, stdin);
     novo.modelo[strcspn(novo.modelo, "\n")] = '\0';
 
-    // Status padrão: disponível
+    // Status inicial
     novo.status = 1;
 
     // Associar local atual
@@ -98,7 +98,9 @@ void listarVeiculos(const Veiculo veiculos[], int quantidade, const Local locais
     for (int i = 0; i < quantidade; i++) {
         if (veiculos[i].ativo) {
             const char* statusStr = veiculos[i].status ? "Disponível" : "Ocupado";
-            const char* nomeLocal = (veiculos[i].idLocalAtual >= 0 && veiculos[i].idLocalAtual < qtdLocais && locais[veiculos[i].idLocalAtual].ativo)
+            const char* nomeLocal = (locais && veiculos[i].idLocalAtual >= 0 &&
+                                     veiculos[i].idLocalAtual < qtdLocais &&
+                                     locais[veiculos[i].idLocalAtual].ativo)
                 ? locais[veiculos[i].idLocalAtual].nome
                 : "Local inválido";
 
@@ -123,11 +125,11 @@ void atualizarVeiculo(Veiculo veiculos[], int quantidade, const Local locais[], 
         while (getchar() != '\n');
         return;
     }
-    while (getchar() != '\n'); // Limpa buffer
+    while (getchar() != '\n');
 
     printf("\n--- Atualizar Veículo ---\n");
 
-    // Atualizar modelo
+    // Modelo
     printf("Novo modelo (%s): ", veiculos[id].modelo);
     char novoModelo[MAX_MODELO];
     fgets(novoModelo, MAX_MODELO, stdin);
@@ -136,7 +138,7 @@ void atualizarVeiculo(Veiculo veiculos[], int quantidade, const Local locais[], 
         strcpy(veiculos[id].modelo, novoModelo);
     }
 
-    // Atualizar status
+    // Status
     printf("Novo status (1 = disponível, 0 = ocupado) [%d]: ", veiculos[id].status);
     int status;
     if (scanf("%d", &status) == 1 && (status == 0 || status == 1)) {
@@ -146,7 +148,7 @@ void atualizarVeiculo(Veiculo veiculos[], int quantidade, const Local locais[], 
     }
     while (getchar() != '\n');
 
-    // Atualizar local atual
+    // Novo local
     printf("\n--- Locais disponíveis ---\n");
     for (int i = 0; i < qtdLocais; i++) {
         if (locais[i].ativo) {
@@ -166,4 +168,29 @@ void atualizarVeiculo(Veiculo veiculos[], int quantidade, const Local locais[], 
     while (getchar() != '\n');
 
     printf("Veículo atualizado com sucesso!\n");
+}
+
+void excluirVeiculo(Veiculo veiculos[], int *quantidade) {
+    listarVeiculos(veiculos, *quantidade, NULL, 0); 
+
+    printf("\nDigite o ID do veículo que deseja excluir: ");
+    int id;
+    if (scanf("%d", &id) != 1 || id < 0 || id >= *quantidade || !veiculos[id].ativo) {
+        printf("ID inválido ou veículo já está inativo.\n");
+        while (getchar() != '\n');
+        return;
+    }
+    while (getchar() != '\n');
+
+    printf("Tem certeza que deseja excluir o veículo com placa %s? (s/n): ", veiculos[id].placa);
+    char confirmacao;
+    scanf("%c", &confirmacao);
+    while (getchar() != '\n');
+
+    if (confirmacao == 's' || confirmacao == 'S') {
+        veiculos[id].ativo = 0;
+        printf("Veículo excluído com sucesso.\n");
+    } else {
+        printf("Exclusão cancelada.\n");
+    }
 }
