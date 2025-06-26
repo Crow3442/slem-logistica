@@ -73,3 +73,51 @@ E para executar:
 
 - João Eduardo Soares Moreira  
 - Rafael Nagem Volpini
+
+---
+
+## 🧰 Como configurar e rodar o projeto
+
+### ✅ Requisitos
+
+Para compilar e executar este projeto, você precisa ter:
+
+- [GCC/G++ (compilador C++)](https://jmeubank.github.io/pt-br/GCC-Installer/)
+- [Make](https://chocolatey.org/packages/make) (opcional, mas recomendado)
+- Um terminal compatível (Git Bash, PowerShell, CMD ou Windows Terminal)
+
+---
+
+### ⚙️ Passos para configurar no Windows
+
+1. **Instale o compilador C++:**
+   - Baixe e instale o GCC/G++ pelo link:
+     https://jmeubank.github.io/pt-br/GCC-Installer/
+
+2. **Instale o Make com Chocolatey:**
+   - Se ainda não tiver o Chocolatey, abra o PowerShell como administrador e execute:
+     ```powershell
+     Set-ExecutionPolicy Bypass -Scope Process -Force; `
+     [System.Net.ServicePointManager]::SecurityProtocol = `
+     [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
+     iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+     ```
+
+   - Depois, instale o make:
+     ```powershell
+     choco install make
+     ```
+
+3. **Abra o terminal, vá até a pasta do projeto:**
+   ```bash
+   cd caminho/para/SLEM
+   ```
+
+4. **Compile e execute:**
+   ```bash
+   make run
+   ```
+
+---
+
+> ⚠️ Certifique-se de que todos os arquivos estão salvos em UTF-8 (sem BOM), especialmente se usar acentos nos textos.
