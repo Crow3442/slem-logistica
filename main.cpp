@@ -3,7 +3,7 @@
 #include "include/locais.h"
 
 int main() {
-    system("chcp 65001 > nul");  // Suporte UTF-8 no Windows
+    system("chcp 65001 > nul");  // Suporte a UTF-8 no terminal do Windows
 
     Local locais[MAX_LOCAIS];
     int quantidade = 0;
@@ -14,6 +14,7 @@ int main() {
         printf("1. Cadastrar local\n");
         printf("2. Listar locais\n");
         printf("3. Atualizar local\n");
+        printf("4. Excluir local\n");
         printf("0. Sair\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
@@ -29,11 +30,14 @@ int main() {
             case 3:
                 atualizarLocal(locais, quantidade);
                 break;
+            case 4:
+                excluirLocal(locais, &quantidade);
+                break;
             case 0:
-                printf("Encerrando...\n");
+                printf("Encerrando o sistema...\n");
                 break;
             default:
-                printf("Opção inválida.\n");
+                printf("Opção inválida. Tente novamente.\n");
         }
     } while (opcao != 0);
 

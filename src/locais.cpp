@@ -126,3 +126,28 @@ void atualizarLocal(Local locais[], int quantidade) {
 
     printf("Local atualizado com sucesso!\n");
 }
+
+void excluirLocal(Local locais[], int *quantidade) {
+    listarLocais(locais, *quantidade);
+
+    printf("\nDigite o ID do local que deseja excluir: ");
+    int id;
+    if (scanf("%d", &id) != 1 || id < 0 || id >= *quantidade || !locais[id].ativo) {
+        printf("ID inválido.\n");
+        while (getchar() != '\n');
+        return;
+    }
+    while (getchar() != '\n'); // limpa buffer
+
+    printf("Tem certeza que deseja excluir o local '%s'? (s/n): ", locais[id].nome);
+    char resposta;
+    scanf("%c", &resposta);
+    while (getchar() != '\n');
+
+    if (resposta == 's' || resposta == 'S') {
+        locais[id].ativo = 0;
+        printf("Local excluído com sucesso.\n");
+    } else {
+        printf("Exclusão cancelada.\n");
+    }
+}
