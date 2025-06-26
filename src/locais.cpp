@@ -84,3 +84,45 @@ void listarLocais(const Local locais[], int quantidade) {
         printf("Nenhum local ativo cadastrado.\n");
     }
 }
+
+void atualizarLocal(Local locais[], int quantidade) {
+    listarLocais(locais, quantidade);
+
+    printf("\nDigite o ID do local que deseja atualizar: ");
+    int id;
+    if (scanf("%d", &id) != 1 || id < 0 || id >= quantidade || !locais[id].ativo) {
+        printf("ID inválido.\n");
+        while (getchar() != '\n');
+        return;
+    }
+    while (getchar() != '\n'); // limpa buffer
+
+    printf("\n--- Atualizar Local ---\n");
+
+    // Atualizar nome
+    printf("Novo nome (%s): ", locais[id].nome);
+    char novoNome[MAX_NOME];
+    fgets(novoNome, MAX_NOME, stdin);
+    novoNome[strcspn(novoNome, "\n")] = '\0';
+    if (strlen(novoNome) > 0 && !nomeInvalido(novoNome)) {
+        strcpy(locais[id].nome, novoNome);
+    }
+
+    // Atualizar coordenada X
+    printf("Nova coordenada X (%.2f): ", locais[id].x);
+    float x;
+    if (scanf("%f", &x) == 1) {
+        locais[id].x = x;
+    }
+    while (getchar() != '\n');
+
+    // Atualizar coordenada Y
+    printf("Nova coordenada Y (%.2f): ", locais[id].y);
+    float y;
+    if (scanf("%f", &y) == 1) {
+        locais[id].y = y;
+    }
+    while (getchar() != '\n');
+
+    printf("Local atualizado com sucesso!\n");
+}
