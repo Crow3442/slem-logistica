@@ -25,4 +25,7 @@ void excluirVeiculo(Veiculo veiculos[], int *quantidade);
 int encontrarVeiculoPorPlaca(const Veiculo veiculos[], int quantidade, const char placa[]);
 void converterPlacaParaMaiusculo(char placa[]);
 
+void salvarVeiculosEmArquivo(const Veiculo veiculos[], int quantidade);
+int carregarVeiculosDoArquivo(Veiculo veiculos[]);
+
 #endif

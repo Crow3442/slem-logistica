@@ -194,3 +194,32 @@ void excluirVeiculo(Veiculo veiculos[], int *quantidade) {
         printf("Exclusão cancelada.\n");
     }
 }
+
+void salvarVeiculosEmArquivo(const Veiculo veiculos[], int quantidade) {
+    FILE *f = fopen("data/veiculos.dat", "wb");
+    if (f == NULL) {
+        printf("Erro ao salvar veículos no arquivo.\n");
+        return;
+    }
+
+    fwrite(veiculos, sizeof(Veiculo), quantidade, f);
+    fclose(f);
+    printf("Veículos salvos com sucesso.\n");
+}
+
+int carregarVeiculosDoArquivo(Veiculo veiculos[]) {
+    FILE *f = fopen("data/veiculos.dat", "rb");
+    if (f == NULL) {
+        printf("Arquivo veiculos.dat não encontrado. Nenhum veículo carregado.\n");
+        return 0;
+    }
+
+    int quantidade = 0;
+    while (quantidade < MAX_VEICULOS && fread(&veiculos[quantidade], sizeof(Veiculo), 1, f) == 1) {
+        quantidade++;
+    }
+
+    fclose(f);
+    printf("Veículos carregados do arquivo: %d\n", quantidade);
+    return quantidade;
+}

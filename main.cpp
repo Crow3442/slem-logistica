@@ -58,15 +58,18 @@ void menuVeiculos(Veiculo veiculos[], int *qtdVeiculos, Local locais[], int qtdL
         switch (opcao) {
             case 1:
                 cadastrarVeiculo(veiculos, qtdVeiculos, locais, qtdLocais);
+                salvarVeiculosEmArquivo(veiculos, *qtdVeiculos);
                 break;
             case 2:
                 listarVeiculos(veiculos, *qtdVeiculos, locais, qtdLocais);
                 break;
             case 3:
                 atualizarVeiculo(veiculos, *qtdVeiculos, locais, qtdLocais);
+                salvarVeiculosEmArquivo(veiculos, *qtdVeiculos);
                 break;
             case 4:
                 excluirVeiculo(veiculos, qtdVeiculos);
+                salvarVeiculosEmArquivo(veiculos, *qtdVeiculos);
                 break;
             case 0:
                 printf("Retornando ao menu principal...\n");
@@ -79,13 +82,13 @@ void menuVeiculos(Veiculo veiculos[], int *qtdVeiculos, Local locais[], int qtdL
 }
 
 int main() {
-    system("chcp 65001 > nul");  // UTF-8 no terminal
+    system("chcp 65001 > nul");  // Suporte a UTF-8 no terminal (Windows)
 
     Local locais[MAX_LOCAIS];
-    int qtdLocais = carregarLocaisDoArquivo(locais);  // leitura automática
+    int qtdLocais = carregarLocaisDoArquivo(locais);
 
     Veiculo veiculos[MAX_VEICULOS];
-    int qtdVeiculos = 0;
+    int qtdVeiculos = carregarVeiculosDoArquivo(veiculos);
 
     int opcao;
     do {
