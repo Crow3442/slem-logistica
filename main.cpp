@@ -84,6 +84,7 @@ void menuPedidos(Pedido pedidos[], int *qtdPedidos, Local locais[], int qtdLocai
         printf("\n========= MENU DE PEDIDOS =========\n");
         printf("1. Cadastrar pedido\n");
         printf("2. Listar pedidos\n");
+        printf("3. Atualizar pedido\n");
         printf("0. Voltar ao menu principal\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
@@ -96,7 +97,11 @@ void menuPedidos(Pedido pedidos[], int *qtdPedidos, Local locais[], int qtdLocai
             case 2:
                 listarPedidos(pedidos, *qtdPedidos, locais, qtdLocais, veiculos, qtdVeiculos);
                 break;
+            case 3:
+                atualizarPedido(pedidos, *qtdPedidos, locais, qtdLocais, veiculos, qtdVeiculos);
+                break;
             case 0:
+                printf("Retornando ao menu principal...\n");
                 break;
             default:
                 printf("Opção inválida.\n");
@@ -105,7 +110,7 @@ void menuPedidos(Pedido pedidos[], int *qtdPedidos, Local locais[], int qtdLocai
 }
 
 int main() {
-    system("chcp 65001 > nul"); // Suporte a UTF-8 no terminal
+    system("chcp 65001 > nul");  // Suporte a UTF-8 no terminal (Windows)
 
     Local locais[MAX_LOCAIS];
     int qtdLocais = carregarLocaisDoArquivo(locais);
@@ -114,7 +119,7 @@ int main() {
     int qtdVeiculos = carregarVeiculosDoArquivo(veiculos);
 
     Pedido pedidos[MAX_PEDIDOS];
-    int qtdPedidos = 0;  // Ainda não usamos arquivo para pedidos
+    int qtdPedidos = 0;  // A persistência de pedidos será implementada depois
 
     int opcao;
     do {
