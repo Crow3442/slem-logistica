@@ -260,3 +260,50 @@ void atualizarPedido(Pedido pedidos[], int quantidade, const Local locais[], int
         } while (decisao < 1 || decisao > 3);
     }
 }
+
+void excluirPedido(Pedido pedidos[], int quantidade, const Local locais[], int qtdLocais, const Veiculo veiculos[], int qtdVeiculos) {
+    listarPedidos(pedidos, quantidade, locais, qtdLocais, veiculos, qtdVeiculos);
+
+    printf("\nDigite o ID do pedido que deseja excluir: ");
+    int id;
+    if (scanf("%d", &id) != 1 || id < 0 || id >= quantidade || !pedidos[id].ativo) {
+        printf("ID inválido ou pedido inativo.\n");
+        while (getchar() != '\n');
+        return;
+    }
+    while (getchar() != '\n');
+
+    if (pedidos[id].status == ENTREGUE) {
+        printf("Não é permitido excluir pedidos já entregues.\n");
+        return;
+    }
+
+    // Mostrar resumo do pedido
+    const char* nomeOrigem = locais[pedidos[id].idOrigem].nome;
+    const char* nomeDestino = locais[pedidos[id].idDestino].nome;
+    const char* nomeVeiculo = (pedidos[id].idVeiculo >= 0 &&
+                               pedidos[id].idVeiculo < qtdVeiculos &&
+                               veiculos[pedidos[id].idVeiculo].ativo)
+                               ? veiculos[pedidos[id].idVeiculo].placa
+                               : "Não atribuído";
+    const char* statusStr = pedidos[id].status == PENDENTE ? "Pendente" :
+                            pedidos[id].status == EM_ENTREGA ? "Em entrega" : "Entregue";
+
+    printf("\n--- Resumo do Pedido ---\n");
+    printf("Origem : %s\n", nomeOrigem);
+    printf("Destino: %s\n", nomeDestino);
+    printf("Veículo: %s\n", nomeVeiculo);
+    printf("Status : %s\n", statusStr);
+
+    printf("\nTem certeza que deseja excluir este pedido? (1=sim / 0=não): ");
+    int confirmar;
+    scanf("%d", &confirmar);
+    while (getchar() != '\n');
+
+    if (confirmar == 1) {
+        pedidos[id].ativo = 0;
+        printf("Pedido excluído com sucesso.\n");
+    } else {
+        printf("Exclusão cancelada.\n");
+    }
+}

@@ -85,6 +85,7 @@ void menuPedidos(Pedido pedidos[], int *qtdPedidos, Local locais[], int qtdLocai
         printf("1. Cadastrar pedido\n");
         printf("2. Listar pedidos\n");
         printf("3. Atualizar pedido\n");
+        printf("4. Excluir pedido\n");
         printf("0. Voltar ao menu principal\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
@@ -99,6 +100,9 @@ void menuPedidos(Pedido pedidos[], int *qtdPedidos, Local locais[], int qtdLocai
                 break;
             case 3:
                 atualizarPedido(pedidos, *qtdPedidos, locais, qtdLocais, veiculos, qtdVeiculos);
+                break;
+            case 4:
+                excluirPedido(pedidos, *qtdPedidos, locais, qtdLocais, veiculos, qtdVeiculos);
                 break;
             case 0:
                 printf("Retornando ao menu principal...\n");
