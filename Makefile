@@ -6,7 +6,10 @@ SRC_DIR = src
 INCLUDE_DIR = include
 
 # Arquivos fonte
-SRCS = main.cpp $(SRC_DIR)/locais.cpp $(SRC_DIR)/veiculos.cpp
+SRCS = main.cpp \
+       $(SRC_DIR)/locais.cpp \
+       $(SRC_DIR)/veiculos.cpp \
+       $(SRC_DIR)/pedidos.cpp
 
 # Compilador e flags
 CXX = g++
