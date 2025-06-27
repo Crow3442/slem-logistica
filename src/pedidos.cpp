@@ -307,3 +307,32 @@ void excluirPedido(Pedido pedidos[], int quantidade, const Local locais[], int q
         printf("Exclusão cancelada.\n");
     }
 }
+
+int carregarPedidosDoArquivo(Pedido pedidos[]) {
+    FILE *arquivo = fopen("dados/pedidos.dat", "rb");
+    if (arquivo == NULL) {
+        return 0; // Arquivo ainda não existe
+    }
+
+    int i = 0;
+    while (i < MAX_PEDIDOS && fread(&pedidos[i], sizeof(Pedido), 1, arquivo) == 1) {
+        i++;
+    }
+
+    fclose(arquivo);
+    return i; // Retorna a quantidade de pedidos lida
+}
+
+void salvarPedidosEmArquivo(const Pedido pedidos[], int quantidade) {
+    FILE *arquivo = fopen("dados/pedidos.dat", "wb");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir arquivo de pedidos para escrita.\n");
+        return;
+    }
+
+    for (int i = 0; i < quantidade; i++) {
+        fwrite(&pedidos[i], sizeof(Pedido), 1, arquivo);
+    }
+
+    fclose(arquivo);
+}

@@ -94,15 +94,18 @@ void menuPedidos(Pedido pedidos[], int *qtdPedidos, Local locais[], int qtdLocai
         switch (opcao) {
             case 1:
                 cadastrarPedido(pedidos, qtdPedidos, locais, qtdLocais, veiculos, qtdVeiculos);
+                salvarPedidosEmArquivo(pedidos, *qtdPedidos);
                 break;
             case 2:
                 listarPedidos(pedidos, *qtdPedidos, locais, qtdLocais, veiculos, qtdVeiculos);
                 break;
             case 3:
                 atualizarPedido(pedidos, *qtdPedidos, locais, qtdLocais, veiculos, qtdVeiculos);
+                salvarPedidosEmArquivo(pedidos, *qtdPedidos);
                 break;
             case 4:
                 excluirPedido(pedidos, *qtdPedidos, locais, qtdLocais, veiculos, qtdVeiculos);
+                salvarPedidosEmArquivo(pedidos, *qtdPedidos);
                 break;
             case 0:
                 printf("Retornando ao menu principal...\n");
@@ -123,7 +126,7 @@ int main() {
     int qtdVeiculos = carregarVeiculosDoArquivo(veiculos);
 
     Pedido pedidos[MAX_PEDIDOS];
-    int qtdPedidos = 0;  // A persistência de pedidos será implementada depois
+    int qtdPedidos = carregarPedidosDoArquivo(pedidos);
 
     int opcao;
     do {

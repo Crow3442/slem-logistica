@@ -29,4 +29,7 @@ void excluirPedido(Pedido pedidos[], int quantidade, const Local locais[], int q
 // Função auxiliar
 int veiculoEmUso(int idVeiculo, const Pedido pedidos[], int qtdPedidos, int idIgnorar);
 
+int carregarPedidosDoArquivo(Pedido pedidos[]);
+void salvarPedidosEmArquivo(const Pedido pedidos[], int quantidade);
+
 #endif
