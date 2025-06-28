@@ -1,28 +1,71 @@
 #include <stdio.h>
+#include <string.h>
 #include "../include/pedidos.h"
+#include "../include/locais.h"
+#include "../include/veiculos.h"
+
+void salvarPedidosEmArquivo(const Pedido pedidos[], int quantidade) {
+    FILE *f = fopen("data/pedidos.dat", "wb");
+    if (f == NULL) {
+        printf("Erro ao salvar pedidos no arquivo.\n");
+        return;
+    }
+
+    fwrite(pedidos, sizeof(Pedido), quantidade, f);
+    fclose(f);
+    printf("Arquivo data/pedidos.dat gerado com sucesso com %d pedidos.\n", quantidade);
+}
 
 int main() {
-    Pedido exemplos[MAX_PEDIDOS];
+    Pedido pedidos[MAX_PEDIDOS];
+    int qtd = 0;
 
-    exemplos[0] = {0, 1, 0, PENDENTE, 1};     // válido: com veículo
-    exemplos[1] = {1, 2, 1, EM_ENTREGA, 1};   // válido: com veículo
-    exemplos[2] = {2, 3, 2, ENTREGUE, 1};     // válido: com veículo
-    exemplos[3] = {0, 2, -1, PENDENTE, 1};    // sem veículo
-    exemplos[4] = {3, 1, -1, EM_ENTREGA, 1};  // sem veículo, status inválido → útil para testes
-    exemplos[5] = {1, 0, 1, ENTREGUE, 1};     // outro com entregue
+    // Pedido 0: PENDENTE, sem veículo
+    pedidos[qtd].ativo = 1;
+    pedidos[qtd].idOrigem = 0;
+    pedidos[qtd].idDestino = 1;
+    pedidos[qtd].peso = 10.0f;
+    pedidos[qtd].idVeiculo = -1;
+    pedidos[qtd].status = PENDENTE;
+    qtd++;
 
-    FILE *arquivo = fopen("data/pedidos.dat", "wb");
-    if (arquivo == NULL) {
-        printf("Erro ao criar arquivo de pedidos.\n");
-        return 1;
-    }
+    // Pedido 1: EM_ENTREGA, com veículo
+    pedidos[qtd].ativo = 1;
+    pedidos[qtd].idOrigem = 1;
+    pedidos[qtd].idDestino = 2;
+    pedidos[qtd].peso = 5.5f;
+    pedidos[qtd].idVeiculo = 0;
+    pedidos[qtd].status = EM_ENTREGA;
+    qtd++;
 
-    for (int i = 0; i < 6; i++) {
-        fwrite(&exemplos[i], sizeof(Pedido), 1, arquivo);
-    }
+    // Pedido 2: ENTREGUE, com veículo
+    pedidos[qtd].ativo = 1;
+    pedidos[qtd].idOrigem = 2;
+    pedidos[qtd].idDestino = 0;
+    pedidos[qtd].peso = 3.2f;
+    pedidos[qtd].idVeiculo = 1;
+    pedidos[qtd].status = ENTREGUE;
+    qtd++;
 
-    fclose(arquivo);
-    printf("Arquivo de pedidos gerado com sucesso.\n");
+    // Pedido 3: PENDENTE, com veículo (ainda não em entrega)
+    pedidos[qtd].ativo = 1;
+    pedidos[qtd].idOrigem = 3;
+    pedidos[qtd].idDestino = 4;
+    pedidos[qtd].peso = 8.8f;
+    pedidos[qtd].idVeiculo = 2;
+    pedidos[qtd].status = PENDENTE;
+    qtd++;
+
+    // Pedido 4: EM_ENTREGA, outro veículo e rota
+    pedidos[qtd].ativo = 1;
+    pedidos[qtd].idOrigem = 4;
+    pedidos[qtd].idDestino = 1;
+    pedidos[qtd].peso = 12.7f;
+    pedidos[qtd].idVeiculo = 3;
+    pedidos[qtd].status = EM_ENTREGA;
+    qtd++;
+
+    salvarPedidosEmArquivo(pedidos, qtd);
 
     return 0;
 }
