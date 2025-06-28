@@ -1,1 +1,0 @@
-// Arquivo: include/util.h
