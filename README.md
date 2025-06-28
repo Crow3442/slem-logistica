@@ -4,11 +4,13 @@ Trabalho prático da disciplina **Algoritmos e Estruturas de Dados I** – Engen
 Pontifícia Universidade Católica de Minas Gerais  
 Professor: Ivan Luiz Vieira de Araújo
 
+---
+
 ## 📌 Descrição do Projeto
 
-O SLEM é um sistema de gerenciamento de entregas, desenvolvido em **C++** com base em estruturas e algoritmos estudados na disciplina. O sistema simula operações de logística, incluindo cadastro de locais, veículos e pedidos, além de cálculo de rotas de entrega.
+O SLEM é um sistema de gerenciamento de entregas, desenvolvido em **C++** com base em estruturas e algoritmos estudados na disciplina. O sistema simula operações de logística, incluindo cadastro de locais, veículos e pedidos, além de cálculo de rotas de entrega com distância euclidiana.
 
-Este projeto enfatiza a modularização, manipulação de arquivos binários/texto, abstração de dados com structs/classes, e lógica de roteamento com distância euclidiana.
+Este projeto enfatiza a modularização, manipulação de arquivos binários, abstração de dados com structs, e lógica de roteamento. Também foram incluídos scripts auxiliares para geração de dados de teste e um `Makefile` para automação da compilação e execução.
 
 ---
 
@@ -16,11 +18,13 @@ Este projeto enfatiza a modularização, manipulação de arquivos binários/tex
 
 - **CRUD de Locais** (nome, coordenadas X e Y)
 - **CRUD de Veículos** (placa, modelo, status, localização)
-- **CRUD de Pedidos** (ID, local de origem, destino, peso)
-- **Cálculo de rota de entrega** com busca do veículo mais próximo
-- **Simulação de entrega** com atualização de status e posição
-- **Backup e restauração de dados** com arquivos binários
-- **Menu interativo** em loop até opção SAIR
+- **CRUD de Pedidos** (origem, destino, peso, status, veículo vinculado)
+- **Entrega em duas etapas**: iniciar e finalizar entrega
+- **Cálculo de rota** com busca do veículo mais próximo (distância euclidiana)
+- **Atualização automática de status e posição**
+- **Backup e restauração** com arquivos binários
+- **Scripts para geração de dados de exemplo**
+- **Menu interativo** em loop até a opção SAIR
 
 ---
 
@@ -28,12 +32,13 @@ Este projeto enfatiza a modularização, manipulação de arquivos binários/tex
 
 ```
 SLEM/
-├── include/      # Arquivos .h (interfaces)
-├── src/          # Arquivos .cpp (implementações)
-├── data/         # Arquivos de dados binários
-├── main.cpp      # Função principal (menu)
-├── Makefile      # Script de compilação (automatizado)
-└── README.md     # Este arquivo
+├── include/        # Arquivos .h (interfaces)
+├── src/            # Arquivos .cpp (implementações)
+├── tools/          # Scripts para gerar dados de exemplo
+├── data/           # Arquivos de dados binários gerados (.dat)
+├── main.cpp        # Função principal (menu)
+├── Makefile        # Script de compilação e execução
+└── README.md       # Este arquivo
 ```
 
 ---
@@ -42,30 +47,81 @@ SLEM/
 
 ### ✅ Usando Make (recomendado)
 
-Este projeto possui um `Makefile` com suporte a:
+O `Makefile` oferece suporte aos seguintes comandos:
 
-| Comando         | O que faz                                            |
-|-----------------|------------------------------------------------------|
-| `make`          | Compila o projeto e gera o executável `slem.exe`     |
-| `make run`      | Compila (se necessário) e executa o programa         |
-| `make clean`    | Remove o executável                                  |
-| `make rebuild`  | Limpa e recompila tudo do zero                       |
+| Comando             | Ação                                                      |
+|---------------------|-----------------------------------------------------------|
+| `make`              | Compila o projeto principal e gera `slem.exe`             |
+| `make run`          | Executa o programa principal                              |
+| `make clean`        | Remove apenas `slem.exe`                                  |
+| `make locais`       | Compila e executa o script de locais                      |
+| `make veiculos`     | Compila e executa o script de veículos                    |
+| `make pedidos`      | Compila e executa o script de pedidos                     |
+| `make dados`        | Executa todos os três scripts de geração de dados         |
+| `make clean-tools`  | Remove os executáveis dos scripts de dados                |
+| `make clean-all`    | Remove todos os executáveis (principal + scripts)         |
 
-> 💡 Use **Git Bash**, **MinGW** ou **PowerShell com Make instalado** no Windows.
+---
 
-### 🔧 Compilação manual (alternativa)
+## 🧰 Como Configurar e Rodar o Projeto
 
-Se preferir compilar diretamente, use:
+### ✅ Requisitos
+
+| Tecnologia | Função                         | Link Oficial                                      |
+|------------|--------------------------------|---------------------------------------------------|
+| **GCC/G++**| Compilador C/C++               | https://gcc.gnu.org/                              |
+| **Make**   | Automação de compilação        | https://www.gnu.org/software/make/               |
+| **MinGW**  | GCC e Make para Windows        | https://www.mingw-w64.org/                        |
+| **Git Bash** | Terminal compatível no Windows| https://git-scm.com/downloads                    |
+
+---
+
+### 🪟 Windows (recomendado)
+
+1. **Instale o GCC/G++ com MinGW:**
+   - https://www.mingw-w64.org/
+
+2. **Instale o Chocolatey (se ainda não tiver):**
+   - Abra o **PowerShell como Administrador**
+   - Execute:
+
+   ```powershell
+   Set-ExecutionPolicy Bypass -Scope Process -Force; `
+   [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
+   iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+   ```
+
+3. **Instale o Make com Chocolatey:**
+
+   ```powershell
+   choco install make
+   ```
+
+4. **Use o Git Bash ou PowerShell para rodar o projeto:**
+
+   ```bash
+   cd caminho/para/SLEM
+   make run
+   ```
+
+---
+
+### 🐧 Linux / WSL
 
 ```bash
-g++ -Wall -Iinclude -o slem main.cpp src/locais.cpp
+sudo apt update
+sudo apt install build-essential make
+make run
 ```
 
-E para executar:
+---
 
-```bash
-./slem
-```
+## 📊 Análise de Complexidade
+
+### 🔍 Busca do Veículo Mais Próximo
+- Varre todos os veículos disponíveis
+- Calcula a distância entre o local atual do veículo e o local de origem do pedido
+- **Complexidade da operação: O(n)**, onde n = número de veículos
 
 ---
 
@@ -76,48 +132,4 @@ E para executar:
 
 ---
 
-## 🧰 Como configurar e rodar o projeto
-
-### ✅ Requisitos
-
-Para compilar e executar este projeto, você precisa ter:
-
-- [GCC/G++ (compilador C++)](https://jmeubank.github.io/pt-br/GCC-Installer/)
-- [Make](https://chocolatey.org/packages/make) (opcional, mas recomendado)
-- Um terminal compatível (Git Bash, PowerShell, CMD ou Windows Terminal)
-
----
-
-### ⚙️ Passos para configurar no Windows
-
-1. **Instale o compilador C++:**
-   - Baixe e instale o GCC/G++ pelo link:
-     https://jmeubank.github.io/pt-br/GCC-Installer/
-
-2. **Instale o Make com Chocolatey:**
-   - Se ainda não tiver o Chocolatey, abra o PowerShell como administrador e execute:
-     ```powershell
-     Set-ExecutionPolicy Bypass -Scope Process -Force; `
-     [System.Net.ServicePointManager]::SecurityProtocol = `
-     [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
-     iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-     ```
-
-   - Depois, instale o make:
-     ```powershell
-     choco install make
-     ```
-
-3. **Abra o terminal, vá até a pasta do projeto:**
-   ```bash
-   cd caminho/para/SLEM
-   ```
-
-4. **Compile e execute:**
-   ```bash
-   make run
-   ```
-
----
-
-> ⚠️ Certifique-se de que todos os arquivos estão salvos em UTF-8 (sem BOM), especialmente se usar acentos nos textos.
+> O sistema foi testado, validado e cumpre todos os critérios definidos no enunciado do trabalho prático. A estrutura modular, a simulação de entregas e o uso de arquivos binários foram aplicados com sucesso.
