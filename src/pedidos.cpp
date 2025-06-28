@@ -13,7 +13,9 @@ int veiculoEmUso(int idVeiculo, const Pedido pedidos[], int qtdPedidos, int idIg
     return 0;
 }
 
-void cadastrarPedido(Pedido pedidos[], int *quantidade, const Local locais[], int qtdLocais, const Veiculo veiculos[], int qtdVeiculos) {
+void cadastrarPedido(Pedido pedidos[], int* quantidade,
+                     const Local locais[], int qtdLocais,
+                     const Veiculo veiculos[], int qtdVeiculos) {
     if (*quantidade >= MAX_PEDIDOS) {
         printf("Limite de pedidos atingido.\n");
         return;
@@ -21,52 +23,151 @@ void cadastrarPedido(Pedido pedidos[], int *quantidade, const Local locais[], in
 
     Pedido novo;
     novo.ativo = 1;
-    novo.status = PENDENTE;
     novo.idVeiculo = -1;
 
-    printf("\n--- Cadastro de Pedido ---\n");
+    printf("\n--- Cadastro de Novo Pedido ---\n");
 
+    // Listar locais disponíveis
     printf("Locais disponíveis:\n");
     for (int i = 0; i < qtdLocais; i++) {
-        if (locais[i].ativo)
+        if (locais[i].ativo) {
             printf("ID %02d: %s\n", i, locais[i].nome);
+        }
     }
 
-    int origemValida = 0;
-    while (!origemValida) {
-        printf("Digite o ID do local de origem: ");
-        if (scanf("%d", &novo.idOrigem) == 1 &&
-            novo.idOrigem >= 0 && novo.idOrigem < qtdLocais && locais[novo.idOrigem].ativo) {
-            origemValida = 1;
+    // Origem
+    int origem;
+    while (1) {
+        printf("\nDigite o ID do local de ORIGEM: ");
+        if (scanf("%d", &origem) == 1 && origem >= 0 && origem < qtdLocais && locais[origem].ativo) {
+            novo.idOrigem = origem;
+            break;
         } else {
-            printf("Origem inválida. Tente novamente.\n");
+            printf("O local digitado é inválido ou não existe.\n");
             while (getchar() != '\n');
         }
     }
 
-    int destinoValido = 0;
-    while (!destinoValido) {
-        printf("Digite o ID do local de destino (≠ origem): ");
-        if (scanf("%d", &novo.idDestino) == 1 &&
-            novo.idDestino >= 0 && novo.idDestino < qtdLocais &&
-            locais[novo.idDestino].ativo && novo.idDestino != novo.idOrigem) {
-            destinoValido = 1;
+    // Destino
+    int destino;
+    while (1) {
+        printf("Digite o ID do local de DESTINO (≠ origem): ");
+        if (scanf("%d", &destino) == 1 &&
+            destino >= 0 && destino < qtdLocais &&
+            locais[destino].ativo &&
+            destino != novo.idOrigem) {
+            novo.idDestino = destino;
+            break;
         } else {
-            printf("Destino inválido. Tente novamente.\n");
+            printf("Destino inválido. Não pode ser igual à origem e deve ser um local ativo.\n");
             while (getchar() != '\n');
         }
     }
 
-    while (getchar() != '\n');
-    pedidos[*quantidade] = novo;
-    (*quantidade)++;
+    // Peso
+    while (1) {
+        printf("Digite o peso do item (em kg): ");
+        if (scanf("%f", &novo.peso) == 1 && novo.peso > 0) {
+            break;
+        } else {
+            printf("Peso inválido. Digite um valor numérico maior que 0.\n");
+            while (getchar() != '\n');
+        }
+    }
 
-    printf("Pedido cadastrado com sucesso!\n");
+    // Veículo vinculado
+    int opcaoVeiculo;
+    while (1) {
+        printf("Deseja vincular um veículo a este pedido? (1 = sim, 0 = não): ");
+        if (scanf("%d", &opcaoVeiculo) == 1 && (opcaoVeiculo == 0 || opcaoVeiculo == 1)) {
+            break;
+        } else {
+            printf("Opção inválida. Digite 1 para sim ou 0 para não.\n");
+            while (getchar() != '\n');
+        }
+    }
+
+    if (opcaoVeiculo == 1) {
+        printf("\nVeículos disponíveis:\n");
+        int encontrou = 0;
+        for (int i = 0; i < qtdVeiculos; i++) {
+            if (veiculos[i].ativo && veiculos[i].status == 1 && !veiculoEmUso(i, pedidos, *quantidade, -1)) {
+                printf("ID %02d: %s (%s)\n", i, veiculos[i].placa, veiculos[i].modelo);
+                encontrou = 1;
+            }
+        }
+        if (!encontrou) {
+            printf("Nenhum veículo disponível no momento. Continuando sem vínculo.\n");
+        } else {
+            int v;
+            while (1) {
+                printf("Digite o ID do veículo para vincular (ou -1 para continuar sem veículo): ");
+                if (scanf("%d", &v) == 1 && (v == -1 || (v >= 0 && v < qtdVeiculos &&
+                    veiculos[v].ativo && veiculos[v].status == 1 &&
+                    !veiculoEmUso(v, pedidos, *quantidade, -1)))) {
+                    novo.idVeiculo = v;
+                    break;
+                } else {
+                    printf("Veículo inválido, indisponível ou em uso.\n");
+                    while (getchar() != '\n');
+                }
+            }
+        }
+    }
+
+    // Status
+    int s;
+    while (1) {
+        printf("\nEscolha o status do pedido:\n");
+        printf("0 = PENDENTE\n1 = EM_ENTREGA\n2 = ENTREGUE\nEscolha: ");
+        if (scanf("%d", &s) == 1 && s >= 0 && s <= 2) {
+            if ((s == EM_ENTREGA || s == ENTREGUE) && novo.idVeiculo == -1) {
+                printf("Para status EM_ENTREGA ou ENTREGUE, é necessário vincular um veículo.\n");
+            } else {
+                novo.status = (StatusPedido)s;
+                break;
+            }
+        } else {
+            printf("Status inválido. Digite 0, 1 ou 2.\n");
+            while (getchar() != '\n');
+        }
+    }
+
+    while (getchar() != '\n'); // limpar buffer
+
+    // Resumo
+    printf("\nResumo do pedido:\n");
+    printf("Origem : %s\n", locais[novo.idOrigem].nome);
+    printf("Destino: %s\n", locais[novo.idDestino].nome);
+    printf("Peso   : %.2f kg\n", novo.peso);
+    printf("Veículo: %s\n", (novo.idVeiculo == -1) ? "Nenhum" : veiculos[novo.idVeiculo].placa);
+    printf("Status : %s\n", novo.status == PENDENTE ? "PENDENTE" :
+                           novo.status == EM_ENTREGA ? "EM_ENTREGA" : "ENTREGUE");
+
+    // Confirmação
+    int confirmar;
+    while (1) {
+        printf("\nDeseja salvar este pedido? (1 = sim, 0 = não): ");
+        if (scanf("%d", &confirmar) == 1 && (confirmar == 0 || confirmar == 1)) {
+            break;
+        } else {
+            printf("Opção inválida.\n");
+            while (getchar() != '\n');
+        }
+    }
+
+    if (confirmar == 1) {
+        pedidos[*quantidade] = novo;
+        (*quantidade)++;
+        printf("Pedido cadastrado com sucesso!\n");
+    } else {
+        printf("Cadastro cancelado.\n");
+    }
 }
 
 void listarPedidos(const Pedido pedidos[], int quantidade, const Local locais[], int qtdLocais, const Veiculo veiculos[], int qtdVeiculos) {
     printf("\n--- Lista de Pedidos ---\n");
-    printf("%-4s | %-20s -> %-20s | %-10s | %s\n", "ID", "Origem", "Destino", "Status", "Veículo");
+    printf("%-4s | %-20s -> %-20s | %-8s | %-10s | %s\n", "ID", "Origem", "Destino", "Peso", "Status", "Veículo");
     printf("-------------------------------------------------------------------------\n");
 
     for (int i = 0; i < quantidade; i++) {
@@ -78,7 +179,7 @@ void listarPedidos(const Pedido pedidos[], int quantidade, const Local locais[],
             const char* nomeVeiculo = (pedidos[i].idVeiculo >= 0 && pedidos[i].idVeiculo < qtdVeiculos && veiculos[pedidos[i].idVeiculo].ativo)
                                        ? veiculos[pedidos[i].idVeiculo].placa : "Não atribuído";
 
-            printf("%02d   | %-20s -> %-20s | %-10s | %s\n", i, nomeOrigem, nomeDestino, statusStr, nomeVeiculo);
+            printf("%02d   | %-20s -> %-20s | %6.2fkg | %-10s | %s\n", i, nomeOrigem, nomeDestino, pedidos[i].peso, statusStr, nomeVeiculo);
         }
     }
 }
@@ -308,8 +409,23 @@ void excluirPedido(Pedido pedidos[], int quantidade, const Local locais[], int q
     }
 }
 
+void salvarPedidosEmArquivo(const Pedido pedidos[], int quantidade) {
+    FILE *arquivo = fopen("data/pedidos.dat", "wb");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir arquivo de pedidos para escrita.\n");
+        return;
+    }
+
+    for (int i = 0; i < quantidade; i++) {
+        fwrite(&pedidos[i], sizeof(Pedido), 1, arquivo);
+    }
+
+    fclose(arquivo);
+    printf("Pedidos salvos com sucesso!\n");
+}
+
 int carregarPedidosDoArquivo(Pedido pedidos[]) {
-    FILE *arquivo = fopen("dados/pedidos.dat", "rb");
+    FILE *arquivo = fopen("data/pedidos.dat", "rb");
     if (arquivo == NULL) {
         return 0; // Arquivo ainda não existe
     }
@@ -323,16 +439,28 @@ int carregarPedidosDoArquivo(Pedido pedidos[]) {
     return i; // Retorna a quantidade de pedidos lida
 }
 
-void salvarPedidosEmArquivo(const Pedido pedidos[], int quantidade) {
-    FILE *arquivo = fopen("dados/pedidos.dat", "wb");
-    if (arquivo == NULL) {
-        printf("Erro ao abrir arquivo de pedidos para escrita.\n");
+void salvarPedidos(const Pedido pedidos[], int quantidade, const char* nomeArquivo) {
+    FILE* f = fopen("data/pedidos.dat", "wb");
+    if (!f) {
+        printf("Erro ao abrir arquivo para escrita: %s\n", nomeArquivo);
         return;
     }
+    fwrite(&quantidade, sizeof(int), 1, f);
+    fwrite(pedidos, sizeof(Pedido), quantidade, f);
+    fclose(f);
+    printf("Pedidos salvos com sucesso!\n");
+}
 
-    for (int i = 0; i < quantidade; i++) {
-        fwrite(&pedidos[i], sizeof(Pedido), 1, arquivo);
+int carregarPedidos(Pedido pedidos[], const char* nomeArquivo) {
+    FILE* f = fopen("data/pedidos.dat", "rb");
+    if (!f) {
+        printf("Arquivo de pedidos não encontrado: %s\n", nomeArquivo);
+        return 0;
     }
-
-    fclose(arquivo);
+    int qtd = 0;
+    fread(&qtd, sizeof(int), 1, f);
+    fread(pedidos, sizeof(Pedido), qtd, f);
+    fclose(f);
+    printf("Pedidos carregados com sucesso!\n");
+    return qtd;
 }
