@@ -27,7 +27,43 @@ void gerarLocaisDeExemplo(Local locais[], int *qtd) {
     strcpy(locais[7].nome, "Mineirão");
     locais[7].x = 35.0; locais[7].y = 32.0; locais[7].ativo = 1;
 
-    *qtd = 8;
+    strcpy(locais[8].nome, "Palácio das Artes");
+    locais[8].x = 13.0; locais[8].y = 17.0; locais[8].ativo = 1;
+
+    strcpy(locais[9].nome, "Praça da Liberdade");
+    locais[9].x = 16.5; locais[9].y = 21.0; locais[9].ativo = 1;
+
+    strcpy(locais[10].nome, "Rodoviária de BH");
+    locais[10].x = 14.0; locais[10].y = 24.0; locais[10].ativo = 1;
+
+    strcpy(locais[11].nome, "Lagoa da Pampulha");
+    locais[11].x = 38.0; locais[11].y = 35.0; locais[11].ativo = 1;
+
+    strcpy(locais[12].nome, "BH Shopping");
+    locais[12].x = 40.0; locais[12].y = 15.0; locais[12].ativo = 1;
+
+    strcpy(locais[13].nome, "Zoológico de BH");
+    locais[13].x = 42.0; locais[13].y = 34.0; locais[13].ativo = 1;
+
+    strcpy(locais[14].nome, "UFMG - Campus Pampulha");
+    locais[14].x = 33.0; locais[14].y = 30.0; locais[14].ativo = 1;
+
+    strcpy(locais[15].nome, "Hospital das Clínicas");
+    locais[15].x = 19.0; locais[15].y = 23.0; locais[15].ativo = 1;
+
+    strcpy(locais[16].nome, "Parque Municipal");
+    locais[16].x = 13.5; locais[16].y = 20.5; locais[16].ativo = 1;
+
+    strcpy(locais[17].nome, "Praça Raul Soares");
+    locais[17].x = 17.0; locais[17].y = 22.5; locais[17].ativo = 1;
+
+    strcpy(locais[18].nome, "Feira Hippie (Av. Afonso Pena)");
+    locais[18].x = 11.5; locais[18].y = 18.5; locais[18].ativo = 1;
+
+    strcpy(locais[19].nome, "Alto Vera Cruz");
+    locais[19].x = 22.0; locais[19].y = 16.0; locais[19].ativo = 1;
+
+    *qtd = 20;
 }
 
 void salvarLocaisEmArquivo(const Local locais[], int quantidade) {

@@ -1,34 +1,44 @@
-# Nome do executável
-TARGET = slem
+# Compilador
+CC = g++
+CFLAGS = -Wall -Iinclude
 
-# Diretórios
-SRC_DIR = src
-INCLUDE_DIR = include
+SRC = main.cpp src/locais.cpp src/veiculos.cpp src/pedidos.cpp src/sistema.cpp
+BIN = slem
 
-# Arquivos fonte
-SRCS = main.cpp \
-       $(SRC_DIR)/locais.cpp \
-       $(SRC_DIR)/veiculos.cpp \
-       $(SRC_DIR)/pedidos.cpp \
-	   $(SRC_DIR)/sistema.cpp
+# ======================== Sistema Principal ========================
+all: $(BIN)
 
-# Compilador e flags
-CXX = g++
-CXXFLAGS = -Wall -I$(INCLUDE_DIR)
+$(BIN): $(SRC)
+	$(CC) $(CFLAGS) -o $(BIN) $(SRC)
 
-# Regra principal
-all: $(TARGET)
+run: $(BIN)
+	./$(BIN)
 
-$(TARGET): $(SRCS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+# ======================== Scripts de Dados ========================
+dados: locais veiculos pedidos
 
-# Executar o programa
-run: all
-	./$(TARGET).exe
+locais: tools/criar_dados_locais.cpp
+	$(CC) $(CFLAGS) -o tools/locais tools/criar_dados_locais.cpp
+	tools/locais
 
-# Limpar o executável
+veiculos: tools/criar_dados_veiculos.cpp
+	$(CC) $(CFLAGS) -o tools/veiculos tools/criar_dados_veiculos.cpp
+	tools/veiculos
+
+pedidos: tools/criar_dados_pedidos.cpp
+	$(CC) $(CFLAGS) -o tools/pedidos tools/criar_dados_pedidos.cpp
+	tools/pedidos
+
+# ======================== Limpeza ========================
+
+# Remove apenas o executável principal
 clean:
-	rm -f $(TARGET).exe $(TARGET)
+	-@rm -f $(BIN).exe 2>/dev/null || del /Q $(BIN).exe
 
-# Limpar e recompilar
-rebuild: clean all
+# Remove apenas os executáveis dos scripts de dados
+clean-tools:
+	-@rm -f tools/locais.exe tools/veiculos.exe tools/pedidos.exe 2>/dev/null || \
+	del /Q tools\locais.exe tools\veiculos.exe tools\pedidos.exe
+
+# Remove tudo
+clean-all: clean clean-tools
