@@ -3,6 +3,9 @@
 #include "include/locais.h"
 #include "include/veiculos.h"
 #include "include/pedidos.h"
+#include "include/sistema.h"
+
+// ======================== MENUS ========================
 
 void menuLocais(Local locais[], int *quantidade) {
     int opcao;
@@ -108,7 +111,6 @@ void menuPedidos(Pedido pedidos[], int *qtdPedidos, Local locais[], int qtdLocai
                 salvarPedidosEmArquivo(pedidos, *qtdPedidos);
                 break;
             case 0:
-                printf("Retornando ao menu principal...\n");
                 break;
             default:
                 printf("Opção inválida.\n");
@@ -116,25 +118,55 @@ void menuPedidos(Pedido pedidos[], int *qtdPedidos, Local locais[], int qtdLocai
     } while (opcao != 0);
 }
 
+void menuEntregas(Pedido pedidos[], int *qtdPedidos, Local locais[], int qtdLocais, Veiculo veiculos[], int qtdVeiculos) {
+    int opcao;
+    do {
+        printf("\n======= MENU DE ENTREGAS =======\n");
+        printf("1. Iniciar entrega\n");
+        printf("2. Finalizar entrega\n");
+        printf("0. Voltar ao menu principal\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+        while (getchar() != '\n');
+
+        switch (opcao) {
+            case 1:
+                iniciarEntrega(pedidos, *qtdPedidos, veiculos, qtdVeiculos, locais, qtdLocais);
+                salvarPedidosEmArquivo(pedidos, *qtdPedidos);
+                salvarVeiculosEmArquivo(veiculos, qtdVeiculos);
+                break;
+            case 2:
+                finalizarEntrega(pedidos, *qtdPedidos, veiculos, qtdVeiculos, locais, qtdLocais);
+                salvarPedidosEmArquivo(pedidos, *qtdPedidos);
+                salvarVeiculosEmArquivo(veiculos, qtdVeiculos);
+                break;
+            case 0:
+                break;
+            default:
+                printf("Opção inválida.\n");
+        }
+    } while (opcao != 0);
+}
+
+// ======================== MAIN ========================
+
 int main() {
-    system("chcp 65001 > nul");  // Suporte a UTF-8 no terminal (Windows)
-
     Local locais[MAX_LOCAIS];
-    int qtdLocais = carregarLocaisDoArquivo(locais);
-
     Veiculo veiculos[MAX_VEICULOS];
-    int qtdVeiculos = carregarVeiculosDoArquivo(veiculos);
-
     Pedido pedidos[MAX_PEDIDOS];
+
+    int qtdLocais = carregarLocaisDoArquivo(locais);
+    int qtdVeiculos = carregarVeiculosDoArquivo(veiculos);
     int qtdPedidos = carregarPedidosDoArquivo(pedidos);
 
     int opcao;
     do {
-        printf("\n========== SISTEMA DE LOGÍSTICA ==========\n");
-        printf("1. Menu de locais\n");
-        printf("2. Menu de veículos\n");
-        printf("3. Menu de pedidos\n");
-        printf("0. Sair do sistema\n");
+        printf("\n========= MENU PRINCIPAL =========\n");
+        printf("1. Gerenciar locais\n");
+        printf("2. Gerenciar veículos\n");
+        printf("3. Gerenciar pedidos\n");
+        printf("4. Gerenciar entregas\n");
+        printf("0. Sair\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
         while (getchar() != '\n');
@@ -149,8 +181,11 @@ int main() {
             case 3:
                 menuPedidos(pedidos, &qtdPedidos, locais, qtdLocais, veiculos, qtdVeiculos);
                 break;
+            case 4:
+                menuEntregas(pedidos, &qtdPedidos, locais, qtdLocais, veiculos, qtdVeiculos);
+                break;
             case 0:
-                printf("Encerrando o sistema. Até mais!\n");
+                printf("Encerrando o programa.\n");
                 break;
             default:
                 printf("Opção inválida.\n");

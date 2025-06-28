@@ -9,7 +9,8 @@ INCLUDE_DIR = include
 SRCS = main.cpp \
        $(SRC_DIR)/locais.cpp \
        $(SRC_DIR)/veiculos.cpp \
-       $(SRC_DIR)/pedidos.cpp
+       $(SRC_DIR)/pedidos.cpp \
+	   $(SRC_DIR)/sistema.cpp
 
 # Compilador e flags
 CXX = g++
