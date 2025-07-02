@@ -2,7 +2,7 @@
 
 Trabalho prático da disciplina **Algoritmos e Estruturas de Dados I** – Engenharia de Software  
 Pontifícia Universidade Católica de Minas Gerais  
-Professor: Ivan Luiz Vieira de Araújo
+Professores: Ivan Luiz Vieira de Araújo e Laerte Xavier
 
 ---
 
