@@ -121,7 +121,6 @@ make run
 ### 🔍 Busca do Veículo Mais Próximo
 - Varre todos os veículos disponíveis
 - Calcula a distância entre o local atual do veículo e o local de origem do pedido
-- **Complexidade da operação: O(n)**, onde n = número de veículos
 
 ---
 
