@@ -9,9 +9,20 @@ void converterPlacaParaMaiusculo(char placa[]) {
     }
 }
 
-int encontrarVeiculoPorPlaca(const Veiculo veiculos[], int quantidade, const char placa[]) {
-    for (int i = 0; i < quantidade; i++) {
-        if (veiculos[i].ativo && strcmp(veiculos[i].placa, placa) == 0) {
+/**
+ * Procura um veículo no vetor a partir da placa.
+ *
+ * @param veiculos Vetor de veículos.
+ * @param qtdVeiculos Quantidade de veículos no vetor.
+ * @param placa Placa do veículo a ser encontrado.
+ * @return Índice do veículo se encontrado, -1 caso contrário.
+ */
+int encontrarVeiculoPorPlaca(const Veiculo veiculos[], int qtdVeiculos, const char* placa) {
+    if (veiculos == NULL || placa == NULL || qtdVeiculos <= 0) {
+        return -1;
+    }
+    for (int i = 0; i < qtdVeiculos; i++) {
+        if (strcmp(veiculos[i].placa, placa) == 0) {
             return i;
         }
     }

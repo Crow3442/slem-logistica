@@ -1,17 +1,29 @@
 #include "../include/pedidos.h"
 #include <stdio.h>
 
+/**
+* Verifica se um veículo está em uso em algum pedido com status EM_ENTREGA.
+*
+* @param idVeiculo ID do veículo a ser verificado.
+* @param pedidos Vetor de pedidos registrados.
+* @param qtdPedidos Quantidade total de pedidos no vetor.
+* @param idIgnorar Índice do pedido que deve ser ignorado na verificação.
+* @return 1 se o veículo estiver em uso, 0 caso contrário.
+*/
 int veiculoEmUso(int idVeiculo, const Pedido pedidos[], int qtdPedidos, int idIgnorar) {
-    for (int i = 0; i < qtdPedidos; i++) {
-        if (i == idIgnorar) continue;
-        if (pedidos[i].ativo &&
-            pedidos[i].idVeiculo == idVeiculo &&
-            pedidos[i].status == EM_ENTREGA) {
-            return 1;
+        if (qtdPedidos <= 0 || pedidos == NULL || idVeiculo < 0) {
+            return 0;
         }
+        for (int i = 0; i < qtdPedidos; i++) {
+            if (i == idIgnorar) continue;
+            if (pedidos[i].ativo &&
+                pedidos[i].idVeiculo == idVeiculo &&
+                pedidos[i].status == EM_ENTREGA) {
+                return 1;
+            }
+        }
+        return 0;
     }
-    return 0;
-}
 
 void cadastrarPedido(Pedido pedidos[], int* quantidade,
                      const Local locais[], int qtdLocais,

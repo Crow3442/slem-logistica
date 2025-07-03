@@ -5,9 +5,21 @@
 #include "../include/pedidos.h"
 #include "../include/veiculos.h"
 
-float calcularDistancia(Local a, Local b) {
-    float dx = a.x - b.x;
-    float dy = a.y - b.y;
+/**
+ * Calcula a distância euclidiana entre dois locais.
+ *
+ * @param origem Local de origem.
+ * @param destino Local de destino.
+ * @return Distância entre os dois locais. Retorna -1.0 em caso de valores inválidos.
+ */
+float calcularDistancia(Local origem, Local destino) {
+    // Tratamento de exceções: coordenadas inválidas
+    if (origem.x < 0 || origem.y < 0 || destino.x < 0 || destino.y < 0) {
+        return -1.0;
+    }
+
+    float dx = origem.x - destino.x;
+    float dy = origem.y - destino.y;
     return sqrt(dx * dx + dy * dy);
 }
 
