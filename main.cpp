@@ -16,7 +16,7 @@ void menuLocais(Local locais[], int *quantidade) {
         printf("3. Atualizar local\n");
         printf("4. Excluir local\n");
         printf("0. Voltar ao menu principal\n");
-        printf("Escolha uma opção: ");
+        printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
         while (getchar() != '\n');
 
@@ -39,7 +39,7 @@ void menuLocais(Local locais[], int *quantidade) {
             case 0:
                 break;
             default:
-                printf("Opção inválida.\n");
+                printf("Opção invalida.\n");
         }
     } while (opcao != 0);
 }
@@ -47,13 +47,13 @@ void menuLocais(Local locais[], int *quantidade) {
 void menuVeiculos(Veiculo veiculos[], int *qtdVeiculos, Local locais[], int qtdLocais) {
     int opcao;
     do {
-        printf("\n======= MENU DE VEÍCULOS =======\n");
-        printf("1. Cadastrar veículo\n");
-        printf("2. Listar veículos\n");
-        printf("3. Atualizar veículo\n");
-        printf("4. Excluir veículo\n");
+        printf("\n======= MENU DE VEiCULOS =======\n");
+        printf("1. Cadastrar veiculo\n");
+        printf("2. Listar veiculos\n");
+        printf("3. Atualizar veiculo\n");
+        printf("4. Excluir veiculo\n");
         printf("0. Voltar ao menu principal\n");
-        printf("Escolha uma opção: ");
+        printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
         while (getchar() != '\n');
 
@@ -76,7 +76,7 @@ void menuVeiculos(Veiculo veiculos[], int *qtdVeiculos, Local locais[], int qtdL
             case 0:
                 break;
             default:
-                printf("Opção inválida.\n");
+                printf("Opção invalida.\n");
         }
     } while (opcao != 0);
 }
@@ -90,7 +90,7 @@ void menuPedidos(Pedido pedidos[], int *qtdPedidos, Local locais[], int qtdLocai
         printf("3. Atualizar pedido\n");
         printf("4. Excluir pedido\n");
         printf("0. Voltar ao menu principal\n");
-        printf("Escolha uma opção: ");
+        printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
         while (getchar() != '\n');
 
@@ -125,7 +125,7 @@ void menuEntregas(Pedido pedidos[], int *qtdPedidos, Local locais[], int qtdLoca
         printf("1. Iniciar entrega\n");
         printf("2. Finalizar entrega\n");
         printf("0. Voltar ao menu principal\n");
-        printf("Escolha uma opção: ");
+        printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
         while (getchar() != '\n');
 
@@ -143,7 +143,7 @@ void menuEntregas(Pedido pedidos[], int *qtdPedidos, Local locais[], int qtdLoca
             case 0:
                 break;
             default:
-                printf("Opção inválida.\n");
+                printf("Opção invalida.\n");
         }
     } while (opcao != 0);
 }
@@ -163,11 +163,11 @@ int main() {
     do {
         printf("\n========= MENU PRINCIPAL =========\n");
         printf("1. Gerenciar locais\n");
-        printf("2. Gerenciar veículos\n");
+        printf("2. Gerenciar veiculos\n");
         printf("3. Gerenciar pedidos\n");
         printf("4. Gerenciar entregas\n");
         printf("0. Sair\n");
-        printf("Escolha uma opção: ");
+        printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
         while (getchar() != '\n');
 
@@ -188,7 +188,7 @@ int main() {
                 printf("Encerrando o programa.\n");
                 break;
             default:
-                printf("Opção inválida.\n");
+                printf("Opção invalida.\n");
         }
     } while (opcao != 0);
 
