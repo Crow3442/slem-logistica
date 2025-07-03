@@ -60,7 +60,7 @@ void cadastrarLocal(Local locais[], int *quantidade) {
         }
     }
 
-    while (getchar() != '\n'); // Limpa buffer final
+    while (getchar() != '\n'); 
     novo.ativo = 1;
     locais[*quantidade] = novo;
     (*quantidade)++;
@@ -137,7 +137,7 @@ void excluirLocal(Local locais[], int *quantidade) {
         while (getchar() != '\n');
         return;
     }
-    while (getchar() != '\n'); // limpa buffer
+    while (getchar() != '\n');
 
     printf("Tem certeza que deseja excluir o local '%s'? (s/n): ", locais[id].nome);
     char resposta;
@@ -151,8 +151,6 @@ void excluirLocal(Local locais[], int *quantidade) {
         printf("Exclusão cancelada.\n");
     }
 }
-
-#include <stdio.h>  // já deve estar no topo, mas repita se necessário
 
 void salvarLocaisEmArquivo(const Local locais[], int quantidade) {
     FILE *f = fopen("data/locais.dat", "wb");

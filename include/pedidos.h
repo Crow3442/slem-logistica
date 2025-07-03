@@ -40,7 +40,7 @@ void excluirPedido(Pedido pedidos[], int quantidade,
                    const Local locais[], int qtdLocais,
                    const Veiculo veiculos[], int qtdVeiculos);
 
-void removerPedido(Pedido pedidos[], int* quantidade); // opcional, se mantiver uso
+void removerPedido(Pedido pedidos[], int* quantidade);
 
 // Funções de persistência
 void salvarPedidosEmArquivo(const Pedido pedidos[], int quantidade);
